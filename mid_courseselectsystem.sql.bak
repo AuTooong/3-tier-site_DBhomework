@@ -27,6 +27,19 @@ SET time_zone = "+00:00";
 -- 資料表結構 `db_table_course`
 --
 
+CREATE TABLE `db_table_course` (
+  `"選課代號"` varchar(6) NOT NULL,
+  `"課程名稱"` varchar(18) DEFAULT NULL,
+  `"開課班級"` varchar(8) DEFAULT NULL,
+  `"開課科系"` varchar(6) DEFAULT NULL,
+  `"開課年級"` varchar(6) DEFAULT NULL,
+  `"學分數"` varchar(5) DEFAULT NULL,
+  `"必選修"` varchar(5) DEFAULT NULL,
+  `"開課單位"` varchar(6) DEFAULT NULL,
+  `"開課人數"` varchar(6) DEFAULT NULL,
+  `"已收授人數"` varchar(7) DEFAULT NULL,
+  `"授課教師"` varchar(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `db_table_course`
