@@ -87,14 +87,63 @@ try:
 
        # print(selectable)
 
-
-        
-
-
         for i in selectable:
             i.append(flag)
 
         #print(selectable)
+
+    # 加選
+        courseid = "3011" #前端傳的值
+        
+        sql_score = 'SELECT `"學分數"` FROM `db_course` WHERE `"選課代號"` = %s'
+        params_score = (courseid)
+        cursor.execute(sql_score,params_score)
+        score = []
+        for row in cursor:
+            line = []
+            for i in row:
+                line.append(i)
+            score.append(line)
+
+        sql_add = 'INSERT INTO db_courseselected (`"學生姓名 "`, `"學生學號"`, `"學生班級"`, `"已選課程代碼"`, `"學分數"`) VALUES (%s,%s,%s,%s,%s)'
+        params_add = (stduent[0][0],stduent[0][1],stduent[0][2],courseid,score[0][0])
+        print(cursor.execute(sql_add,params_add))
+
+        sql_modify_num = 'UPDATE db_course SET `"已收授人數"` = `"已收授人數"` + 1 WHERE `"選課代號"` = %s'
+        params_modify_num = (courseid)
+        cursor.execute(sql_modify_num,params_modify_num)
+
+        sql_modify_score = 'UPDATE db_students SET `"已選學分"` = `"已選學分"` + %s WHERE `"學生學號"` = %s'
+        params_modify_score = (score[0][0],stdid)
+        cursor.execute(sql_modify_score,params_modify_score)
+
+    # 退選
+        courseid = "1317" #前端傳的值
+
+        sql_score = 'SELECT `"學分數"` FROM `db_course` WHERE `"選課代號"` = %s'
+        params_score = (courseid)
+        cursor.execute(sql_score,params_score)
+        score = []
+        for row in cursor:
+            line = []
+            for i in row:
+                line.append(i)
+            score.append(line)
+
+        sql_delete = 'DELETE FROM db_courseselected WHERE `"學生學號"` = %s AND `"已選課程代碼"` = %s'
+        params_delete = (stdid,courseid)
+        cursor.execute(sql_delete,params_delete)
+
+        sql_modify_num = 'UPDATE db_course SET `"已收授人數"` = `"已收授人數"` - 1 WHERE `"選課代號"` = %s'
+        params_modify_num = (courseid)
+        cursor.execute(sql_modify_num,params_modify_num)
+
+        sql_modify_score = 'UPDATE db_students SET `"已選學分"` = `"已選學分"` - %s WHERE `"學生學號"` = %s'
+        params_modify_score = (score[0][0],stdid)
+        cursor.execute(sql_modify_score,params_modify_score)
+
+
+
         
 except Exception as ex:
     print(ex)
