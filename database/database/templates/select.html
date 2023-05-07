@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>加退選</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="../static/drop.css">
+</head>
+<body>
+	<header class="top">
+		<h1>選課系統</h1>
+	</header>
+
+	<nav>
+		<ul>
+			<li><a href="select.html">可選課表</a></li>
+			<li><a href="drop.html">我的課表</a></li>
+		</ul>
+	</nav>
+<div class="flex-container" id="outter">
+    <div class="item" id="leftContent">
+        <div id="ctl00_LoginPanel" dir="ltr" style="overflow:auto;text-align:left;">
+        <fieldset>
+            <legend>
+                學生資訊
+            </legend>
+            <table class="styleFull">
+                    <tr>
+                        <td class="style1">
+                            <span id="ctl00_userInfo1_LabelStuID">學號：</span>
+                        </td>
+                        <td>
+                            <span id="ctl00_userInfo1_lblStuID"> </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="style1">
+                            <span id="ctl00_userInfo1_LabelName">姓名：</span>
+                        </td>
+                        <td>
+                            <span id="ctl00_userInfo1_lblName"> </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="style1">
+                            <span id="ctl00_userInfo1_LabelClass">班級：</span>
+                        </td>
+                        <td>
+                            <span id="ctl00_userInfo1_lblClass"> </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="style1">
+                            <span id="ctl00_userInfo1_LabelCreditUpperBound">學分上限：</span>
+                        </td>
+                        <td>
+                            <span id="ctl00_userInfo1_lblCreditUpperBound">30</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="style1">
+                            <span id="ctl00_userInfo1_LabelCreditLowerBound">學分下限：</span>
+                        </td>
+                        <td>
+                            <span id="ctl00_userInfo1_lblCreditLowerBound">12</span>
+                        </td>
+                    </tr>
+                    </table>
+
+                <table class="styleFull">
+                    <tr>
+                        <td class="ContactConfirm">
+
+                        </td>
+                        <td>
+                            <form method="POST" action={{ url_for("logout")}}>
+								<input type="submit" name="$btnLogout" value="登出" id="btnLogout" />
+							</form>
+                        </td>
+                    </tr>
+                </table>
+        </fieldset>
+        </div>
+    </div>
+    <div class="item">
+        <div class="flex-container" id="inner">
+            <div class="item">
+            <h3>已選列表</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">課號</th>
+                            <th scope="col">課程名稱</th>
+                            <th scope="col">開課系所</th>
+                            <th scope="col">年級</th>
+                            <th scope="col">必/選修別</th>
+                            <th scope="col">修課人數上限</th>
+                            <th scope="col">目前選修人數</th>
+                            <th scope="col">開課時段</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <form id="selection-form" action="{{ url_for('selection') }}" method="POST">
+                                    <input type="button" name="function" value="加選" >
+                                    <input type="button" name="function" value="退選" >
+                                </form>
+                            </td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form id="selection-form" action="{{ url_for('selection') }}" method="POST">
+                                    <input type="button" name="function" value="加選" >
+                                    <input type="button" name="function" value="退選" >
+                                </form>
+                            </td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fataaaaaaaa</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="item">
+                <!--課表-->
+                <h3>我的課表</h3>
+                <table class="table table-striped table-hover">
+					<thead>
+					<tr>
+						<th scope="col">&nbsp;</th>
+						<th scope="col">Monday</th>
+						<th scope="col">Tueday</th>
+						<th scope="col">Wednesday</th>
+						<th scope="col">Thursday</th>
+						<th scope="col">Friday</th>
+						<th scope="col">Saturdat</th>
+						<th scope="col">Sunday</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td> 8:10~9:00</td>
+						<td>Mark</td>
+						<td>Otto</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td> 9:10~10:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+
+					</tr>
+					<tr>
+						<td> 10:10~11:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td> 11:10~12:00</td>
+
+					</tr>
+					<tr>
+						<td>12:10~13:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td>13:10~14:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td>14:10~15:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td>15:10~16:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+					<tr>
+						<td>16:10~17:00</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fataaaaaaaa</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+						<td>@mdo</td>
+
+					</tr>
+
+
+					</tbody>
+				</table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>
+
+
