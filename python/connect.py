@@ -75,22 +75,17 @@ try:
                 # 13:星期 14:開始時間 15:結束時間
                 if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) and int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
                     print(i[13],j[13],i[14],i[15],j[14],j[15])
-                    flag = 3
+                    flag = 1
                     break
 
             # 判斷是否超過學分
             if int(i[5]) + int(stduent[0][3]) > 30 and flag != 2:
-                flag = 4
+                flag = 1
          
-            print(flag)
-        #    i.append(flag) 
+            i.append(flag) 
 
-       # print(selectable)
+        print(selectable)
 
-        for i in selectable:
-            i.append(flag)
-
-        #print(selectable)
 
     # 加選
         courseid = "3011" #前端傳的值
@@ -107,7 +102,7 @@ try:
 
         sql_add = 'INSERT INTO db_courseselected (`"學生姓名 "`, `"學生學號"`, `"學生班級"`, `"已選課程代碼"`, `"學分數"`) VALUES (%s,%s,%s,%s,%s)'
         params_add = (stduent[0][0],stduent[0][1],stduent[0][2],courseid,score[0][0])
-        print(cursor.execute(sql_add,params_add))
+        cursor.execute(sql_add,params_add)
 
         sql_modify_num = 'UPDATE db_course SET `"已收授人數"` = `"已收授人數"` + 1 WHERE `"選課代號"` = %s'
         params_modify_num = (courseid)
