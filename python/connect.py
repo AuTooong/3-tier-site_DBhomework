@@ -112,6 +112,8 @@ try:
         params_modify_score = (score[0][0],stdid)
         cursor.execute(sql_modify_score,params_modify_score)
 
+        conn.commit()
+
     # 退選
         courseid = "1317" #前端傳的值
 
@@ -137,7 +139,7 @@ try:
         params_modify_score = (score[0][0],stdid)
         cursor.execute(sql_modify_score,params_modify_score)
 
-
+        conn.commit()
 
         
 except Exception as ex:
