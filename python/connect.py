@@ -73,7 +73,7 @@ try:
             for j in selected:
                 # i 要選的課程 j 已選的課程
                 # 13:星期 14:開始時間 15:結束時間
-                if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) or int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
+                if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) and int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
                     print(i[13],j[13],i[14],i[15],j[14],j[15])
                     flag = 3
                     break
