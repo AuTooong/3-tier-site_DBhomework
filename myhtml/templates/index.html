@@ -31,7 +31,7 @@
 								<span id="ctl00_userInfo1_LabelStuID">學號：</span>
 							</td>
 							<td>
-								<span id="ctl00_userInfo1_lblStuID">{{ stdid }} </span>
+								<span id="ctl00_userInfo1_lblStuID">{{ Student[1] }} </span>
 							</td>
 						</tr>
 						<tr>
@@ -39,7 +39,7 @@
 								<span id="ctl00_userInfo1_LabelName">姓名：</span>
 							</td>
 							<td>
-								<span id="ctl00_userInfo1_lblName">{{ student_name }} </span>
+								<span id="ctl00_userInfo1_lblName">{{ Student[0] }} </span>
 							</td>
 						</tr>
 						<tr>
@@ -47,7 +47,7 @@
 								<span id="ctl00_userInfo1_LabelClass">班級：</span>
 							</td>
 							<td>
-								<span id="ctl00_userInfo1_lblClass">{{ class }} </span>
+								<span id="ctl00_userInfo1_lblClass">{{ Student[2] }} </span>
 							</td>
 						</tr>
 						</tbody></table>
@@ -244,31 +244,45 @@
 				{% endif %}
 			</div>
 			<div class="item" id="content">
-				<!--<h3>可關注列表</h3>-->
+				<!--<h3>可加選列表</h3>-->
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th scope="col">&nbsp;</th>
-							<th scope="col">課號</th>
+							<th scope="col">選課代碼 </th>
 							<th scope="col">課程名稱</th>
-							<th scope="col">開課系所</th>
-							<th scope="col">年級</th>
-							<th scope="col">必/選修別</th>
+							<th scope="col">開課班級</th>
+							<th scope="col">學分</th>
+							<th scope="col">必/選修</th>
+							<th scope="col">開課單位</th>
 							<th scope="col">修課人數上限</th>
 							<th scope="col">目前選修人數</th>
+							<th scope="col">授課教授</th>
+							<th scope="col">上課地點</th>
+							<th scope="col">上課星期</th>
 							<th scope="col">開課時段</th>
+							<th scope="col">開課時段</th>
+
 						</tr>
 					</thead>
 					<tbody><!--show出所有可以選的課-->
-						{% for row in optionalclass %}
+						{% for courses in available_courses %}
 						<tr>
 							<td id="selClass">
-								<form action="{{ url_for('selection') }}" method="POST">
-									<input type="button" name="function" value="關注" id="{{ row[0] }}"><!--課號-->
+								<form action="{{ url_for('add') }}" method="POST">
+									{% if courses[16] == 4 %}
+									<input type="button" name="function" value="已加選" id="0000"><!--課號-->
+									{%endif%}
+									<input type="button" name="function" value="加選" id="{{ courses[0] }}"><!--課號-->
 								</form>
 							</td>
-							{% for item in row %}
-							<td>{{ item }}</td>
+				
+							{% for cour in courses %}
+						
+							{% if loop.index != 4 and loop.index != 5 and loop.index != 12 and loop.index != 17 %}
+							<td>{{ cour }}</td>
+							{%endif%}
+				
 		                    {% endfor %}
 						</tr>
 						{% endfor %}
@@ -283,27 +297,38 @@
 					<thead>
 						<tr>
 							<th scope="col">&nbsp;</th>
-							<th scope="col">課號</th>
+							<th scope="col">選課代碼 </th>
 							<th scope="col">課程名稱</th>
-							<th scope="col">開課系所</th>
-							<th scope="col">年級</th>
-							<th scope="col">必/選修別</th>
+							<th scope="col">開課班級</th>
+							<th scope="col">學分</th>
+							<th scope="col">必/選修</th>
+							<th scope="col">開課單位</th>
 							<th scope="col">修課人數上限</th>
 							<th scope="col">目前選修人數</th>
+							<th scope="col">授課教授</th>
+							<th scope="col">上課地點</th>
+							<th scope="col">上課星期</th>
 							<th scope="col">開課時段</th>
+							<th scope="col">開課時段</th>
+
 						</tr>
 					</thead>
 					<tbody><!--show出所有的課-->
-						{% for row in totalclass %}
+						{% for row in courses %}
 						<tr>
 							<td id="selClass">
-								<form action="{{ url_for('selection') }}" method="POST">
+								<form action="{{ url_for('add') }}" method="POST">
+
 									<input type="button" name="function" value="關注" id="{{ row[0] }}"><!--課號-->
 								</form>
 							</td>
-							{% for item in row %}
-							<td>{{ item }}</td>
-	                        {% endfor %}
+							{% for cour in row %}
+						
+							{% if loop.index != 4 and loop.index != 5 and loop.index != 12 and loop.index != 17 %}
+							<td>{{ cour }}</td>
+							{%endif%}
+				
+		                    {% endfor %}
 						</tr>
 						{% endfor %}
 					</tbody>
