@@ -1,12 +1,16 @@
 #!/usr/bin/python3.8
 
-from connect import *
+from conn import *
 stdid = "D1060001"
 courseid = "1310"
 
 # 學生資料
 student = get_student_info(stdid)
 print(type(student[0][1]))
+
+# 學生資料
+focus = get_focus_courses(stdid)
+print(focus)
 
 '''
 # 已選課程

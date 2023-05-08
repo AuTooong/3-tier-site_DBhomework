@@ -22,7 +22,6 @@ def drop():
 @app.route('/select', methods=['POST'])
 def selection():
     selt = request.form.get('student-id')
-    student = get_student_info(stdidy)
     student = get_student_info(stdid)
     return render_template('select.html', stu=student)
 

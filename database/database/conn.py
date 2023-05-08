@@ -42,6 +42,21 @@ def get_selected_courses(stdid):
             selected.append(line)
         return selected
 
+def get_focus_courses(stdid):
+    conn = pymysql.connect(**db_settings)
+    with conn.cursor() as cursor:
+        sql_focus = 'SELECT * FROM db_course LEFT JOIN db_coursetime ON db_course.`"選課代號"`= db_coursetime.`"選課代號"` where db_course.`"選課代號"` IN (SELECT `"已關注課程代碼"` FROM db_coursefucus where `"學生學號"` = %s GROUP by `"已關注課程代碼"`) GROUP by db_course.`"選課代號"`'
+        params_focus = (stdid)
+        cursor.execute(sql_focus,params_focus)
+
+        focus = []
+        for row in cursor:
+            line = []
+            for i in row:
+                line.append(i)
+            focus.append(line)
+        return focus
+
 def get_selectable_courses(stdid):
     conn = pymysql.connect(**db_settings)
     with conn.cursor() as cursor:
@@ -62,9 +77,10 @@ def get_selectable_courses(stdid):
                 line.append(i)
             selectable.append(line)
 
-        flag = 0 # 0:可選 1:不可選 2:已選
+        flag = 0 # 0:可選 1:不可選 2:已選 3:已關注 //以已選優先
         
         selected = get_selected_courses(stdid)
+        focus = get_focus_courses(stdid)
         student = get_student_info(stdid)
 
         for i in selectable:
@@ -73,6 +89,11 @@ def get_selectable_courses(stdid):
             for j in selected:
                 if i[0] == j[0]:
                     flag = 2
+                    break
+            # 判斷是否已關注
+            for j in focus:
+                if i[0] == j[0]:
+                    flag = 3
                     break
             # 判斷是否已選滿 
             if i[9] >= i[8] and flag != 2:
