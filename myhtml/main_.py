@@ -83,6 +83,11 @@ def search():#搜尋
         selected_courses = get_selected_courses(SID)
     return render_template('search.html', selected_courses = selected_courses)
 
+#@app.route('/searchtion', methods=['GET', 'POST'])
+#def searchtion():#可選列表全
+#    if request.method == 'POST':
+#        selectable_courses = get_selectable_courses(SID)
+#    return render_template('searchtion.html', selectable_courses = selectable_courses)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

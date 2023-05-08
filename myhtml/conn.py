@@ -41,6 +41,7 @@ def get_student_info(stdid):
     conn.close()
     return student
 
+## 已選列表
 def get_selected_courses(stdid):
     conn = pymysql.connect(**db_settings)
     with conn.cursor() as cursor:
@@ -56,6 +57,7 @@ def get_selected_courses(stdid):
             selected.append(line)
         return selected
 
+## 可選列表
 def get_selectable_courses(stdid):
     conn = pymysql.connect(**db_settings)
     with conn.cursor() as cursor:
@@ -76,34 +78,86 @@ def get_selectable_courses(stdid):
                 line.append(i)
             selectable.append(line)
 
-        flag = 0 # 0:可選 1:不可選 2:已選
+        flag = 0 # 0:可選 1:已滿 2:衝堂 3:超修 4:已選
         
         selected = get_selected_courses(stdid)
         student = get_student_info(stdid)
 
         for i in selectable:
-            # 判斷是否已選
             flag = 0
+            # 判斷是否已選
             for j in selected:
                 if i[0] == j[0]:
-                    flag = 2
+                    flag = 4
                     break
             # 判斷是否已選滿 
             if i[9] >= i[8] and flag != 2:
                 flag = 1
-
 
             # 判斷是否衝堂
             for j in selected:
                 # i 要選的課程 j 已選的課程
                 # 13:星期 14:開始時間 15:結束時間
                 if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) and int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
-                    flag = 1
+                    flag = 2
                     break
 
             # 判斷是否超過學分
             if int(i[5]) + int(student[0][3]) > 30 and flag != 2:
+                flag = 3
+         
+            i.append(flag) 
+
+        return selectable
+
+## 搜尋可選列表
+def search_selectable_courses(stdid,courseid):
+    conn = pymysql.connect(**db_settings)
+    with conn.cursor() as cursor:
+        sql_selectable = 'SELECT * from db_course LEFT JOIN db_coursetime ON `db_course`.`"選課代號"`= `db_coursetime`.`"選課代號"` where `db_course`.`"選課代號"` NOT IN (SELECT `"選課代號"` from db_course WHERE db_course.`"開課科系"` IN (SELECT SUBSTR(`"學生班級"`, 1,2) as class FROM db_students where `"學生學號"` = %s GROUP by class) and db_course.`"開課年級"` IN (SELECT SUBSTR(`"學生班級"`, 3,1) as grade FROM db_students where `"學生學號"` = %s GROUP by grade) and db_course.`"必選修"` = "M" GROUP BY db_course.`"選課代號"`) GROUP BY db_course.`"選課代號"`;'
+        params_selectable = (stdid,stdid)
+        cursor.execute(sql_selectable,params_selectable)
+
+        selectable = []
+        for row in cursor:
+            line = []
+            for i in row:
+                line.append(i)
+            selectable.append(line)
+
+        for row in cursor:
+            line = []
+            for i in row:
+                line.append(i)
+            selectable.append(line)
+
+        flag = 0 # 0:可選 1:已滿 2:衝堂 3:超修 4:已選
+        
+        selected = get_selected_courses(stdid)
+        student = get_student_info(stdid)
+
+        for i in selectable:
+            flag = 0
+            # 判斷是否已選
+            for j in selected:
+                if i[0] == j[0]:
+                    flag = 4
+                    break
+            # 判斷是否已選滿 
+            if i[9] >= i[8] and flag != 2:
                 flag = 1
+
+            # 判斷是否衝堂
+            for j in selected:
+                # i 要選的課程 j 已選的課程
+                # 13:星期 14:開始時間 15:結束時間
+                if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) and int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
+                    flag = 2
+                    break
+
+            # 判斷是否超過學分
+            if int(i[5]) + int(student[0][3]) > 30 and flag != 2:
+                flag = 3
          
             i.append(flag) 
 

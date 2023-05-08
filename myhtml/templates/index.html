@@ -220,16 +220,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for row in classlist %}
+						{% for row in available_courses %}
 						<tr>
 							<td id="selClass">
 								<form action="{{ url_for('selection') }}" method="POST">
-									<input type="button" name="function" value="關注" id="{{ row[0] }}">
+									<input type="button" name="function" value="關注" id="{{ row[16] }}">
 								</form>
 							</td>
-							{% for item in row %}
-							<td>{{ item }}</td>
-							{% endfor %}
+							<td>{{ row[0] }}</td>
+							<td>{{ row[1] }}</td>
+							<td>{{ row[1] }}</td>
+							<td>{{ row[1] }}</td>
+							<td>{{ row[0] }}</td>
+							<td>{{ row[1] }}</td>
+							<td>{{ row[1] }}</td>
+							<td>{{ row[1] }}</td>
 						</tr>
                         {% endfor %}
 					</tbody>
