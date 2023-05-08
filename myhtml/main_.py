@@ -60,6 +60,10 @@ def lookup():#查看
     selected_courses = get_selected_courses(SID)
     return render_template('lookup.html', selected_courses = selected_courses)
 
+@app.route('/table', methods=['GET', 'POST'])
+def table():#查看
+    selected_courses = get_selected_courses(SID)
+    return render_template('table.html', selected_courses = selected_courses)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():#加選
