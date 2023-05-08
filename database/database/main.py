@@ -1,24 +1,41 @@
 from flask import Flask, render_template, request, url_for
+from connect import *
 
 app = Flask(__name__)
-
+SID = "D1060001"
 @app.route('/search', methods=['GET','POST'])
 def search():
-    code = request.form['code']
-    # 在此處使用代碼進行查詢並返回課程信息
-    course_info = get_course_info(code)
-    return render_template('search.html', course_info=course_info)
+
+    # code = request.form['code']
+    # # 在此處使用代碼進行查詢並返回課程信息
+    # course_info = get_course_info(code)
+    # return render_template('search.html', course_info=course_info)
+    return render_template('', )
+
+
+@app.route('/drop', methods=['GET','POST'])
+def drop():
+    selected_courses = get_selected_courses(SID)
+    return render_template('drop.html', selected_courses)
 
 @app.route('/select', methods=['POST'])
 def selection():
-    return render_template('select.html')
+    selt = request.form.get('student-id')
+    stdidy = quer_by_id(selt)
+    student = get_student_info(stdidy)
+    student = get_student_info(stdid)
+    return render_template('select.html', stu=student)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
     #  利用request取得使用者端傳來的方法為何
     if request.method == 'POST':
         stdid = request.form.get('student-id')
-        return render_template('search.html', stdid=stdid)
+        stdidy = quer_by_id(stdid)
+        student = get_student_info(stdidy)
+        if True:
+            SID = student[0]
+        return render_template('search.html', student = student)
 
     #  非POST的時候就會回傳一個空白的模板
     return render_template('login.html')
