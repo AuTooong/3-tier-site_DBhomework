@@ -9,7 +9,7 @@ SID = "D0000000"
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global SID
-    #  利用request取得使用者端傳來的方法為何
+  
     if request.method == 'POST':
         stdid = request.form.get('student_id')
         stdps = request.form.get('password')
@@ -17,7 +17,7 @@ def login():
         # if student is not EMPTY_LIST:
         if flag==1:
             SID = stdid
-            
+            # return render_template('index.html')
             return redirect(url_for('index'))
         else:
             return render_template('login.html')       
@@ -50,7 +50,17 @@ def index():
     for i in range(0,4):
         Student.append(student[0][i])
     available_courses = get_selectable_courses(SID)
-    return render_template('index.html',Student = Student,available_courses = available_courses)
+    courses = get_all_courses()
+
+
+    # selected_courses = get_selected_courses(SID)
+
+
+
+    return render_template('index.html',Student = Student, available_courses = available_courses, courses = courses)
+    # return render_template('table1.html',selected_courses =selected_courses)
+
+    # return render_template('index.html')
 
 
 
@@ -58,18 +68,19 @@ def index():
 @app.route('/loookup', methods=['GET', 'POST'])
 def lookup():#查看
     selected_courses = get_selected_courses(SID)
-    return render_template('lookup.html', selected_courses = selected_courses)
+    return render_template('lookup.html',selected_courses = selected_courses)
+    # return '''
+    # <html><body> 
+    
+    # {{selected_course}}</body></html>'''
 
-@app.route('/table', methods=['GET', 'POST'])
-def table():#查看
-    selected_courses = get_selected_courses(SID)
-    return render_template('table.html', selected_courses = selected_courses)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():#加選
     if request.method == 'POST':
         corid = request.form.get('corid')
-        add_course(SID, corid)
+        if corid != "0000":
+            add_course(SID, corid)
     return redirect(url_for('index'))
 
 
@@ -87,11 +98,6 @@ def search():#搜尋
         selected_courses = get_selected_courses(SID)
     return render_template('search.html', selected_courses = selected_courses)
 
-#@app.route('/searchtion', methods=['GET', 'POST'])
-#def searchtion():#可選列表全
-#    if request.method == 'POST':
-#        selectable_courses = get_selectable_courses(SID)
-#    return render_template('searchtion.html', selectable_courses = selectable_courses)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -99,6 +105,11 @@ def logout():
     if request.method == 'POST':
         SID = "D0000000"
         return render_template('login.html')
+    
+@app.route('/focus', methods=['GET', 'POST'])
+def focus():
+    
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
