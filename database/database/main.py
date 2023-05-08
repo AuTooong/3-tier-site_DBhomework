@@ -1,8 +1,9 @@
+from pickle import EMPTY_LIST
 from flask import Flask, render_template, request, url_for
-from connect import *
+from conn import *
 
 app = Flask(__name__)
-SID = "D1060001"
+SID = ""
 @app.route('/search', methods=['GET','POST'])
 def search():
 
@@ -21,7 +22,6 @@ def drop():
 @app.route('/select', methods=['POST'])
 def selection():
     selt = request.form.get('student-id')
-    stdidy = quer_by_id(selt)
     student = get_student_info(stdidy)
     student = get_student_info(stdid)
     return render_template('select.html', stu=student)
@@ -31,11 +31,12 @@ def login():
     #  利用request取得使用者端傳來的方法為何
     if request.method == 'POST':
         stdid = request.form.get('student-id')
-        stdidy = quer_by_id(stdid)
-        student = get_student_info(stdidy)
-        if True:
-            SID = student[0]
-        return render_template('search.html', student = student)
+        student = get_student_info(stdid)
+        if student is not EMPTY_LIST:
+            SID = student[0][1]
+        else:
+            return render_template('login.html')
+        return render_template('search.html', stdid=SID)
 
     #  非POST的時候就會回傳一個空白的模板
     return render_template('login.html')
