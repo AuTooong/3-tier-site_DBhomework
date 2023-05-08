@@ -11,11 +11,25 @@ db_settings = {
      "charset": "utf8"
 }
 
+def check_student_info(stdid,password):
+    conn = pymysql.connect(**db_settings)
+    flag = 0
+    with conn.cursor() as cursor:
+        sql_std = 'SELECT * FROM `db_students` WHERE `"學生學號"` = %s AND `"密碼"` = %s'
+        params_std = (stdid, password)
+        cursor.execute(sql_std,params_std)
+        if cursor.fetchone() is not None:
+            flag = 1  # 找到了
+        cursor.close()
+    conn.close()
+    return flag
+
+
 def get_student_info(stdid):
     conn = pymysql.connect(**db_settings)
     student = []
     with conn.cursor() as cursor:
-        sql_std = 'SELECT * FROM db_students WHERE `"學生學號"` = %s'
+        sql_std = 'SELECT * FROM `db_students` WHERE `"學生學號"` = %s'
         params_std = (stdid)
         cursor.execute(sql_std,params_std)
         for row in cursor:
@@ -42,21 +56,6 @@ def get_selected_courses(stdid):
             selected.append(line)
         return selected
 
-def get_focus_courses(stdid):
-    conn = pymysql.connect(**db_settings)
-    with conn.cursor() as cursor:
-        sql_focus = 'SELECT * FROM db_course LEFT JOIN db_coursetime ON db_course.`"選課代號"`= db_coursetime.`"選課代號"` where db_course.`"選課代號"` IN (SELECT `"已關注課程代碼"` FROM db_coursefucus where `"學生學號"` = %s GROUP by `"已關注課程代碼"`) GROUP by db_course.`"選課代號"`'
-        params_focus = (stdid)
-        cursor.execute(sql_focus,params_focus)
-
-        focus = []
-        for row in cursor:
-            line = []
-            for i in row:
-                line.append(i)
-            focus.append(line)
-        return focus
-
 def get_selectable_courses(stdid):
     conn = pymysql.connect(**db_settings)
     with conn.cursor() as cursor:
@@ -77,10 +76,9 @@ def get_selectable_courses(stdid):
                 line.append(i)
             selectable.append(line)
 
-        flag = 0 # 0:可選 1:人已滿 2:衝堂 3:超分 4:已選 //以已選優先
+        flag = 0 # 0:可選 1:不可選 2:已選
         
         selected = get_selected_courses(stdid)
-        focus = get_focus_courses(stdid)
         student = get_student_info(stdid)
 
         for i in selectable:
@@ -88,12 +86,7 @@ def get_selectable_courses(stdid):
             flag = 0
             for j in selected:
                 if i[0] == j[0]:
-                    flag = 4
-                    break
-            # 判斷是否已關注
-            for j in focus:
-                if i[0] == j[0]:
-                    flag = 3
+                    flag = 2
                     break
             # 判斷是否已選滿 
             if i[9] >= i[8] and flag != 2:
@@ -105,12 +98,12 @@ def get_selectable_courses(stdid):
                 # i 要選的課程 j 已選的課程
                 # 13:星期 14:開始時間 15:結束時間
                 if ((i[13] == j[13]) and ((int(i[14]) >= int(j[14]) and int(i[14]) <= int(j[15])) or (int(i[15]) >= int(j[14]) and int(i[15]) <= int(j[15])) or (int(i[14]) <= int(j[14]) and int(i[15]) >= int(j[15])))) and flag != 2:
-                    flag = 2
+                    flag = 1
                     break
 
             # 判斷是否超過學分
             if int(i[5]) + int(student[0][3]) > 30 and flag != 2:
-                flag = 3
+                flag = 1
          
             i.append(flag) 
 
@@ -527,7 +520,6 @@ except Exception as ex:
 #     finally:
 #         cursor.close()
 #         conn.close()
-
 
 
 
