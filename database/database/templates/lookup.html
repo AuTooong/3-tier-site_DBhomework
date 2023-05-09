@@ -1,0 +1,122 @@
+<html>
+<head>
+	<title>加退選</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+	<header class="top">
+		<h1>選課系統</h1>
+	</header>
+
+	<nav>
+		<ul>
+            <li><a href={{url_for('index')}}>首頁</a></li>
+            <li><a href={{url_for('lookup')}}>查看</a></li>
+		</ul>
+	</nav>
+
+    <div class="flex-contnainer" id="selectedtb">
+            <div class="item">
+                <h3>已選列表</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+								<th scope="col">退選</th>
+								<th scope="col">選課代碼 </th>
+								<th scope="col">課程名稱</th>
+								<th scope="col">開課班級</th>
+								<th scope="col">學分</th>
+								<th scope="col">必/選修</th>
+								<th scope="col">開課單位</th>
+								<th scope="col">修課人數上限</th>
+								<th scope="col">目前選修人數</th>
+								<th scope="col">授課教授</th>
+								<th scope="col">上課地點</th>
+								<th scope="col">上課星期</th>
+								<th scope="col">開課時段</th>
+								<th scope="col">開課時段</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for courses in selected_courses %}
+                            <tr>
+                                <td>
+                                    <form id="drop" action="{{ url_for('drop') }}" method="POST">
+                                        <input type=submit name="退選" value="{{ courses[0] }}">
+                                    </form>
+                                </td>
+                                {% for cour in courses %}
+						
+							{% if loop.index != 4 and loop.index != 5 and loop.index != 12 and loop.index != 17 %}
+							<td>{{ cour }}</td>
+							{%endif%}
+				
+		                    {% endfor %}
+						</tr>
+						{% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+            <div class="item">
+                <!--課表-->
+                <h3>我的課表</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">Monday</th>
+                        <th scope="col">Tueday</th>
+                        <th scope="col">Wednesday</th>
+                        <th scope="col">Thursday</th>
+                        <th scope="col">Friday</th>
+                        <th scope="col">Saturdat</th>
+                        <th scope="col">Sunday</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for i in table %}
+                        <tr>
+                        {% for j in i %}
+                        <td>{{ j }}</td>
+                        {% endfor %}
+                        </tr>
+                        {% endfor %}
+                   </tr>
+					</tbody>
+				</table>
+            </div>
+    </div>
+<script>
+    function logout(){
+        alert("確定登出?");
+    }
+    const table = document.createElement('table');
+    const tbody = document.createElement('tbody');
+    
+
+    for (let i = 0; i < 14; i++) {
+    const tr = document.createElement('tr');
+        for (let j = 0; j < 8; j++) {
+            const td = document.createElement('td');
+            td.textContent = `(${i},${j})`;
+            td.setAttribute('data-row', i);
+            td.setAttribute('data-col', j);
+            tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+    }
+
+    // 将 tbody 添加到表格中
+    table.appendChild(tbody);
+
+    // 将表格添加到容器元素中
+    const container = document.querySelector('#table-container');
+    container.appendChild(table);
+  
+    // 在指定的单元格中添加内容
+    const cell23 = document.querySelector('td[data-row="1"][data-col="2"]');
+    cell23.textContent = '我在第二行第三列';
+</script>
+
